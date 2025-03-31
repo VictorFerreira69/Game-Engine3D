@@ -1,26 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum SniperMode
+{
+    Rifle, Sniper,
+}
 public class PlayerInteraction : MonoBehaviour
 {
-    Transform raycastOrigin;
-   
+    [SerializeField] SniperMode sniperMode;
+    [SerializeField] float sniperDistance;
+    [SerializeField] float rifleDistance;
+    [SerializeField] float distance;
+    Transform rayCastOrigin;
+    GameObject target;
+    // Start is called before the first frame update
     void Start()
     {
-        raycastOrigin = Camera.main.transform;  
+        rayCastOrigin = Camera.main.transform;
+        ChangeSniperMode(SniperMode.Rifle);
     }
     private void Update()
     {
-        Debug.DrawRay(raycastOrigin.position, raycastOrigin.forward * 10, Color.black);
-    }
-
-
-    void FixedUpdate()
-    {
-        if (Physics.Raycast(raycastOrigin.position, raycastOrigin.forward,out RaycastHit hit))
+        Debug.DrawRay(rayCastOrigin.position, rayCastOrigin.forward * 10, Color.red);
+        if (Input.GetButtonDown("Fire1"))
         {
-            print("hit.collider");
+            Destroy(target);
         }
     }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (Physics.Raycast(rayCastOrigin.position, rayCastOrigin.forward, out RaycastHit hit, distance))
+        {
+            target = hit.collider.gameObject;
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            ChangeSniperMode(SniperMode.Sniper);
+        }
+        if (Input.GetButtonUp("Fire2"))
+        {
+            ChangeSniperMode(SniperMode.Rifle);
+        }
+    }
+    private void ChangeSniperMode(SniperMode mode)
+    {
+        switch (mode)
+        {
+            case SniperMode.Rifle:
+                distance = rifleDistance;
+                GameController.instance.OnRifleMode.Invoke();
+                break;
+            case SniperMode.Sniper:
+                distance = sniperDistance;
+                GameController.instance.OnSniperMode.Invoke();
+                break;
+        }
+        sniperMode = mode;
+    }
+
+
 }
