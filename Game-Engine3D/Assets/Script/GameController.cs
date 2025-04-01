@@ -8,14 +8,11 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public UnityEvent OnSniperMode;
     public UnityEvent OnRifleMode;
-    // Start is called before the first frame update
-    void Start()
+   
+    void Awake()
     {
         instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+   
 }

@@ -17,7 +17,7 @@ public class Crosshair : MonoBehaviour
         {
             crosshairImage.texture = rifle;
         });
-        GameController.instance.OnRifleMode.AddListener(delegate
+        GameController.instance.OnSniperMode.AddListener(delegate
         {
             crosshairImage.texture = snipe;
         });
