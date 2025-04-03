@@ -24,7 +24,7 @@ public class PlayerInteraction : MonoBehaviour
         Debug.DrawRay(rayCastOrigin.position, rayCastOrigin.forward * 10, Color.red);
         if (Input.GetButtonDown("Fire1"))
         {
-            target.Hit();
+            target?.Hit();
         }
     }
     // Update is called once per frame

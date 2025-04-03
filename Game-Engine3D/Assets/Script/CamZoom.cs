@@ -15,15 +15,31 @@ public class CamZoom : MonoBehaviour
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         GameController.instance.OnRifleMode.AddListener(delegate
         {
-          virtualCamera.m_Lens.FieldOfView = rifleFov;
+            StartCoroutine(ZooOut());
         });
         GameController.instance.OnSniperMode.AddListener(delegate
         {
-            virtualCamera.m_Lens.FieldOfView = sniperFov;
+            StartCoroutine(ZooIn());
         });
     }
+    IEnumerator ZooIn()
+    {
+        while(virtualCamera.m_Lens.FieldOfView > sniperFov)
+        {
+            virtualCamera.m_Lens.FieldOfView -= 0.5f;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    IEnumerator ZooOut()
+    {
+        while (virtualCamera.m_Lens.FieldOfView < rifleFov)
+        {
+            virtualCamera.m_Lens.FieldOfView += 1f;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
 
-  
-  
-    
+
+
+
 }
